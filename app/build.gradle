@@ -19,9 +19,12 @@ android {
     }
 }
 
+ext.slf4jVersion = "1.7.21"
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile "org.slf4j:slf4j-api:${slf4jVersion}"
+    compile "org.slf4j:jul-to-slf4j:${slf4jVersion}"
     apk('com.github.tony19:logback-android-classic:1.1.1-5') {
         // workaround issue #73
         exclude group: 'com.google.android', module: 'android'

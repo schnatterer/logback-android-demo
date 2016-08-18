@@ -1,4 +1,5 @@
 <configuration>
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator" />
     <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
         <tagEncoder>
             <pattern>%logger{12}</pattern>
@@ -8,7 +9,7 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <root level="ALL">
         <appender-ref ref="logcat" />
     </root>
 </configuration>

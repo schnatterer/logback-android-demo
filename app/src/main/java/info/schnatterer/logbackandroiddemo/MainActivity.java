@@ -32,6 +32,23 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 LOG.info("SLF4J info");
+
+                jul();
+            }
+
+            /**
+             * Issue some java util logging statements.
+             */
+            private void jul() {
+                java.util.logging.Logger jul = java.util.logging.Logger.getLogger(MainActivity.class.getName());
+                jul.log( Level.FINEST, "JUL: FINEST");
+                jul.finer("JUL: finer");
+                jul.log( Level.FINER, "JUL: FINER");
+                jul.log( Level.FINE, "JUL: FINE");
+                jul.log( Level.CONFIG, "JUL: CONFIG");
+                jul.log( Level.INFO, "JUL: INFO");
+                jul.log( Level.WARNING, "JUL: WARNING");
+                jul.log( Level.SEVERE, "JUL: SEVERE");
             }
         });
     }
