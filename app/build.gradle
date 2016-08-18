@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.1"
 
     defaultConfig {
-        applicationId "schnatterer.info.logback_android_demo"
+        applicationId "info.schnatterer.logbackandroiddemo"
         minSdkVersion 10
         targetSdkVersion 24
         versionCode 1

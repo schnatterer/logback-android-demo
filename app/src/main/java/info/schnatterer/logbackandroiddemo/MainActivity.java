@@ -1,4 +1,4 @@
-package schnatterer.info.logback_android_demo;
+package info.schnatterer.logbackandroiddemo;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
