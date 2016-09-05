@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-        <ListPreference
-            android:entries="@array/preferences_entry_values_log_levels"
-            android:entryValues="@array/preferences_entry_values_log_levels"
-            android:defaultValue="@string/preferences_default_log_level"
-            android:key="@string/preferences_key_log_level"
-            android:summary="@string/preferences_summary_loglevel"
-            android:title="@string/preferences_title_loglevel" />
-        <ListPreference
-            android:entries="@array/preferences_entry_values_log_levels"
-            android:entryValues="@array/preferences_entry_values_log_levels"
-            android:defaultValue="@string/preferences_default_log_level_logcat"
-            android:key="@string/preferences_key_log_level_logcat"
-            android:summary="@string/preferences_summary_loglevel_logcat"
-            android:title="@string/preferences_title_loglevel_logcat" />
-        <Preference android:title="@string/preferences_title_current_log">
-             <intent android:targetPackage="info.schnatterer.logbackandroiddemo"
-                android:targetClass="info.schnatterer.logbackandroiddemo.OpenLogActivity"/>
-       </Preference>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/preferences_default_log_level"
+        android:entries="@array/preferences_entry_values_log_levels"
+        android:entryValues="@array/preferences_entry_values_log_levels"
+        android:key="@string/preferences_key_log_level"
+        android:summary="@string/preferences_summary_loglevel"
+        android:title="@string/preferences_title_loglevel" />
+    <ListPreference
+        android:defaultValue="@string/preferences_default_log_level_logcat"
+        android:entries="@array/preferences_entry_values_log_levels"
+        android:entryValues="@array/preferences_entry_values_log_levels"
+        android:key="@string/preferences_key_log_level_logcat"
+        android:summary="@string/preferences_summary_loglevel_logcat"
+        android:title="@string/preferences_title_loglevel_logcat" />
+    <Preference android:title="@string/preferences_title_current_log">
+        <intent
+            android:targetClass="info.schnatterer.logbackandroiddemo.OpenLogActivity"
+            android:targetPackage="info.schnatterer.logbackandroiddemo" />
+    </Preference>
+    <Preference android:title="@string/preferences_title_email_log">
+        <intent
+            android:targetClass="info.schnatterer.logbackandroiddemo.SendLogActivity"
+            android:targetPackage="info.schnatterer.logbackandroiddemo" />
+    </Preference>
 </PreferenceScreen>

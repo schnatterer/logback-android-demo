@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".PreferencesDeveloperActivity"/>
         <activity android:name=".OpenLogActivity"/>
+        <activity android:name=".SendLogActivity"/>
 
         <!-- Expose log files for editors/email clients -->
         <provider android:authorities="@string/authority_log_file_provider" android:exported="false" android:grantUriPermissions="true" android:name="android.support.v4.content.FileProvider">
