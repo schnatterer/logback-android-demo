@@ -19,17 +19,34 @@ android {
     }
 }
 
-ext.slf4jVersion = "1.7.21"
+ext {
+    androidCompatibilityVersion = "24.2.0"
+    slf4jVersion = "1.7.21"
+}
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    // Android compatibility
+    compile "com.android.support:appcompat-v7:${androidCompatibilityVersion}"
+    compile "com.android.support:design:${androidCompatibilityVersion}"
+
+    // SLF4J/Logback
     compile "org.slf4j:slf4j-api:${slf4jVersion}"
     compile "org.slf4j:jul-to-slf4j:${slf4jVersion}"
-    apk('com.github.tony19:logback-android-classic:1.1.1-5') {
+    // Use in compile scope, because logback API is needed to change log levels at runtime
+    compile('com.github.tony19:logback-android-classic:1.1.1-5') {
         // workaround issue #73
         exclude group: 'com.google.android', module: 'android'
     }
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:design:24.2.0'
+
+    // Read logfile to string without fuss
+    compile 'commons-io:commons-io:2.5'
+
+    testCompile(
+        'junit:junit:4.12',
+        'org.mockito:mockito-all:1.10.19',
+        "org.robolectric:robolectric:2.4",
+        "org.robolectric:android-all:6.0.0_r1-robolectric-0"
+    )
 }

@@ -1,15 +1,47 @@
-<configuration>
+<configuration debug="true">
+    <!-- Propagates changes made to the level of any logback-classic logger onto jul.
+     Such propagation eliminates the performance impact of disabled log statements.
+     Instances of LogRecord will be sent to logback (via SLF4J) only for enabled log statements.
+     This makes it reasonable for real-world applications to use the jul-to-slf4j bridge. -->
     <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator" />
+
+    <property name="ANDROID_PACKAGE" value="${PACKAGE_NAME}" />
+    <property name="LOG_DIR" value="files/logs" />
+    <property name="APP_NAME" value="logbackandroiddemo" />
+    <property name="LOG_PATH" value="/data/data/${ANDROID_PACKAGE}/${LOG_DIR}" />
+
+    <!-- Create a logcat appender, that logs only specific statements -->
+    <!-- Note: the logger's name is referred to in the code as well! -->
     <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
+        <!-- Don't show trace and debug on logcat -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <tagEncoder>
             <pattern>%logger{12}</pattern>
         </tagEncoder>
         <encoder>
-            <pattern>[%-20thread] %msg</pattern>
+            <pattern>%msg</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Create a file appender that logs all statements -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <!-- keep 2 days' worth of history -->
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%date{HH:mm:ss} %-1level - %msg%n</pattern>
         </encoder>
     </appender>
 
     <root level="ALL">
         <appender-ref ref="logcat" />
+        <appender-ref ref="file" />
     </root>
 </configuration>
