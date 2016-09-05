@@ -1,21 +1,87 @@
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2016 Johannes Schnatterer
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import nl.javadude.gradle.plugins.license.License
 
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.3'
-
+        classpath "gradle.plugin.nl.javadude.gradle.plugins:license-gradle-plugin:0.13.1"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+plugins {
+    id "maven"
+}
+
 allprojects {
+    apply plugin: "com.github.hierynomus.license"
+
     repositories {
         jcenter()
     }
+
+    license {
+        // Use root LICENSE also in child projects
+        header rootProject.file('LICENSE')
+        strictCheck true
+        excludes(["**/build/**",
+                  // This was taken from AOSP. Keep its license.
+                  "**/AppCompatPreferenceActivity.java"
+        ])
+        encoding "UTF-8"
+    }
+
+    // We also want to check license headers in gradle files
+    task licenseGradleFiles(type: License) {
+        source = fileTree(dir: ".").include("build.gradle")
+        mapping {
+            gradle = 'JAVADOC_STYLE'
+        }
+        check = true
+    }
+    tasks['license'].dependsOn licenseGradleFiles
+
+    // When adding licenses to files, also add to gradle files
+    task formatLicenseGradleFiles(type: License) {
+        source = fileTree(dir: ".").include("build.gradle")
+        mapping {
+            gradle = 'JAVADOC_STYLE'
+        }
+    }
+    licenseFormat.dependsOn formatLicenseGradleFiles
+
+    // Make sure license check is performed on each build
+    check.dependsOn tasks['license']
 }
 
 task clean(type: Delete) {
