@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Application-wide technical constants (e.g. for preferences). Don't translate! -->
+<resources>
+    <string name="authority_log_file_provider" translatable="false">info.schnatterer.logbackandroiddemo.LogFileProvider</string>
+    <string name="preferences_key_log_level" translatable="false">logLevel</string>
+    <string name="preferences_default_log_level" translatable="false">INFO</string>
+    <string name="preferences_key_log_level_logcat" translatable="false">logLevelLogCat</string>
+    <string name="preferences_default_log_level_logcat" translatable="false">INFO</string>
+    <string-array name="preferences_entry_values_log_levels" translatable="false">
+        <item>ALL</item>
+        <item>TRACE</item>
+        <item>DEBUG</item>
+        <item>INFO</item>
+        <item>WARN</item>
+        <item>ERROR</item>
+        <item>OFF</item>
+    </string-array>
+</resources>

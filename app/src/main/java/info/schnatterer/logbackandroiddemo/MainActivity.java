@@ -1,6 +1,7 @@
 package info.schnatterer.logbackandroiddemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, PreferencesDeveloperActivity.class));
             return true;
         }
 
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         public ReadLogOnClickListener(TextView textView, Context context) {
             this.textView = textView;
             this.context = context;
+            // Init text
+            setText(readLogFile());
         }
 
         @Override
@@ -88,10 +92,7 @@ public class MainActivity extends AppCompatActivity {
             LOG.info("SLF4J info");
             jul();
 
-            if (textView != null) {
-                textView.setText(readLogFile());
-                // TODO scroll to end of text view
-            }
+            setText(readLogFile());
         }
 
         /**
@@ -122,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
                 fileContent = e.getMessage();
             }
             return fileContent;
+        }
+
+        /**
+         * <code>null</code>-safe version of {@link TextView#setText(CharSequence)}.
+         */
+        private void setText(CharSequence text) {
+            if (textView != null) {
+                textView.setText(text);
+            }
         }
     }
 }
