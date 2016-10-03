@@ -10,4 +10,4 @@ An example that shows some possibilities of using [logback-android](http://tony1
   - Setting the root/logcat levels at runtime
   - Opening the current logfile in an editor: [OpenLogActivity](app/src/main/java/info/schnatterer/logbackandroiddemo/OpenLogActivity.java)
   - Sending all logfiles via email: [SendLogActivity](app/src/main/java/info/schnatterer/logbackandroiddemo/SendLogActivity.java)
-- The central logback-android logic is encapsulated in [Logs](app/src/main/java/info/schnatterer/logbackandroiddemo/util/Logs.java)
+- The central logback-android logic is encapsulated in a separate JAR file: [logback-android-utils](https://github.com/schnatterer/logback-android-utils)

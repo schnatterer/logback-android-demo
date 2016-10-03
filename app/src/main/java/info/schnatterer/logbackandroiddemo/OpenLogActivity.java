@@ -29,7 +29,7 @@ import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBarActivity;
 
-import info.schnatterer.logbackandroiddemo.util.Logs;
+import info.schnatterer.logbackandroidutils.Logs;
 
 /**
  * Sends an intent that contains the newest log file as <code>text/plain</code>.

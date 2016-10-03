@@ -33,7 +33,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.MenuItem;
 
-import info.schnatterer.logbackandroiddemo.util.Logs;
+import info.schnatterer.logbackandroidutils.Logs;
 
 /**
  * Activity that realizes the developer settings.

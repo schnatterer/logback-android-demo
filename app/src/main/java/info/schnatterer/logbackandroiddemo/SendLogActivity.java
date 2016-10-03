@@ -32,7 +32,7 @@ import android.support.v7.app.AppCompatActivity;
 import java.io.File;
 import java.util.ArrayList;
 
-import info.schnatterer.logbackandroiddemo.util.Logs;
+import info.schnatterer.logbackandroidutils.Logs;
 
 /**
  * Sends an intent that contains all available log files. It is supposed to be

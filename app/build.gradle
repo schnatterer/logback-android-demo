@@ -50,6 +50,10 @@ ext {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Advanced features for logback-android
+    compile 'com.github.schnatterer:logback-android-utils:1.0.0'
+
     // Android compatibility
     compile "com.android.support:appcompat-v7:${androidCompatibilityVersion}"
     compile "com.android.support:design:${androidCompatibilityVersion}"

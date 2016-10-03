@@ -44,7 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import info.schnatterer.logbackandroiddemo.util.Logs;
+import info.schnatterer.logbackandroidutils.Logs;
 
 public class MainActivity extends AppCompatActivity {
 
