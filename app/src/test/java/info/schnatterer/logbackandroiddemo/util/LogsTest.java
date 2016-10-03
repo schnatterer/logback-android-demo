@@ -124,6 +124,15 @@ public class LogsTest {
     }
 
     /**
+     * Test for {@link Logs#findNewestLogFile(File[])}, where the parameter is an empty array.
+     */
+    @Test
+    public void testFindNewestLogFileFileArrayEmpty() {
+        File actualFile = Logs.findNewestLogFile(new File[0]);
+        assertNull("find newest returned unexpected result", actualFile);
+    }
+
+    /**
      * Test for {@link Logs#findNewestLogFile(Context)}.
      */
     @Test
@@ -157,7 +166,7 @@ public class LogsTest {
          * Test Case 1: ExistingFilter
          */
         Logger root = (Logger) LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-        LogcatAppender logcatAppender = (LogcatAppender) root.getAppender(Logs.LOGCAT_LOGGER_NAME);
+        LogcatAppender logcatAppender = (LogcatAppender) root.getAppender(Logs.LOGCAT_APPENDER_NAME);
         assertLogcatLevel(logcatAppender, Level.INFO);
 
         // Call method under test
@@ -193,9 +202,9 @@ public class LogsTest {
          * Test Case 5: No logcat appender
          */
         root.detachAppender(logcatAppender);
-        assertNull("Removing logcat appender failed", root.getAppender(Logs.LOGCAT_LOGGER_NAME));
+        assertNull("Removing logcat appender failed", root.getAppender(Logs.LOGCAT_APPENDER_NAME));
         Logs.setLogCatLevel("Not a level", mock(Context.class));
-        assertToastMatches(Logs.LOGCAT_LOGGER_NAME);
+        assertToastMatches(Logs.LOGCAT_APPENDER_NAME);
     }
 
     private void assertToastMatches(String expectedContainedInToast) {

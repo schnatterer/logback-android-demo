@@ -1,18 +1,18 @@
 /**
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2016 Johannes Schnatterer
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -35,9 +35,9 @@ import android.content.Context;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.android.LogcatAppender;
 import ch.qos.logback.classic.filter.ThresholdFilter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.filter.Filter;
 
 /**
@@ -45,9 +45,9 @@ import ch.qos.logback.core.filter.Filter;
  */
 public final class Logs {
     /**
-     * Name of the logcat logger, as configured in logback.xml
+     * Name of the logcat appender, as configured in logback.xml
      */
-    static final String LOGCAT_LOGGER_NAME = "logcat";
+    static final String LOGCAT_APPENDER_NAME = "logcat";
 
     /**
      * Name of the directory where log files are stored under
@@ -74,79 +74,129 @@ public final class Logs {
     }
 
     /**
-     * Returns the current log file.
+     * Returns the current log file from the default folder <code>/data/data/appname/files/logs</code>
      *
      * @param context context to get the app-private files from
      * @return the current log file
      */
     public static File findNewestLogFile(Context context) {
-        return findNewestLogFile(getLogFiles(context));
+        return findNewestLogFile(getLogFiles(context, LOG_FOLDER));
     }
 
     /**
-     * Returns all log files.
+     * Returns the current log file.
+     *
+     * @param context           context to get the app-private files from
+     * @param relativeLogFolder name of the directory where log files are stored under
+     *                          <code>/data/data/appname/files/</code>
+     * @return the current log file
+     */
+    public static File findNewestLogFile(Context context, String relativeLogFolder) {
+        return findNewestLogFile(getLogFiles(context, relativeLogFolder));
+    }
+
+    /**
+     * Returns all log files from the default folder <code>/data/data/appname/files/logs</code>
      *
      * @param context context to get the app-private files from
      * @return all log files
      */
     public static File[] getLogFiles(Context context) {
-        return getLogFileDirectory(context).listFiles();
+        return getLogFiles(context, LOG_FOLDER);
+    }
+
+    /**
+     * Returns all log files.
+     *
+     * @param context           context to get the app-private files from
+     * @param relativeLogFolder name of the directory where log files are stored under
+     *                          <code>/data/data/appname/files/</code>
+     * @return all log files
+     */
+    public static File[] getLogFiles(Context context, String relativeLogFolder) {
+        return getLogFileDirectory(context, relativeLogFolder).listFiles();
     }
 
     /**
      * Returns the folder where log files are stored.
      *
-     * @param context context to get the app-private files from
+     * @param context           context to get the app-private files from
+     * @param relativeLogFolder name of the directory where log files are stored under
+     *                          <code>/data/data/appname/files/</code>
      * @return the directory that contains log files
      */
-    public static File getLogFileDirectory(Context context) {
-        return new File(context.getFilesDir(), LOG_FOLDER);
+    public static File getLogFileDirectory(Context context, String relativeLogFolder) {
+        return new File(context.getFilesDir(), relativeLogFolder);
     }
 
     /**
-     * Sets the threshold log level for the logCat appender. Note: Must be >=
-     * Root Log Level. If not, a warning is toasted.
+     * Sets the log level for a {@link ThresholdFilter} of an appender called "logcat. Note:
+     * <ul>
+     * <li>If there is no such appender a warning is toasted.</li>
+     * <li>If the appender does not have such a filter, a new one is added.</li>
+     * <li>Note: The log level must be >= Root Log Level, because the root log level takes
+     * precedence. If not, a warning is toasted.</li>
+     * </ul>
      *
-     * @param logLevelLogCat the threshold level to set for logCat appender
+     * @param logLevelLogCat the threshold level to set for the logCat appender
      * @param context        (optional) context needed for toasting warnings. If
      *                       <code>null</code> no toast is displayed
      */
     public static void setLogCatLevel(String logLevelLogCat, Context context) {
+        setThresholdFilterLevel(logLevelLogCat, LOGCAT_APPENDER_NAME, context);
+    }
+
+    /**
+     * Sets the log level for a {@link ThresholdFilter} of an appender. Note:
+     * <ul>
+     * <li>If there is no such appender a warning is toasted.</li>
+     * <li>If the appender does not have such a filter, a new one is added.</li>
+     * <li>Note: The log level must be >= Root Log Level, because the root log level takes
+     * precedence. If not, a warning is toasted.</li>
+     * </ul>
+     *
+     * @param logLevel        the threshold level to set for the appender
+     * @param logAppenderName name of the appender, as configured in logback.xml
+     * @param context         (optional) context needed for toasting warnings. If
+     *                        <code>null</code> no toast is displayed
+     */
+    public static void setThresholdFilterLevel(String logLevel, String logAppenderName, Context context) {
         /* Find appender */
         Logger root = (Logger) LoggerFactory
             .getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-        LogcatAppender logcatAppender = (LogcatAppender) root
-            .getAppender(LOGCAT_LOGGER_NAME);
-        if (logcatAppender == null) {
+        Appender<ILoggingEvent> appender = root.getAppender(logAppenderName);
+        if (appender == null) {
             warnAndToast(context, root,
-                "No appender \"" + LOGCAT_LOGGER_NAME + "\" configured. Can't change threshold");
+                "No appender \"" + logAppenderName + "\" configured. Can't change threshold");
             return;
         }
 
-        setLogCatThresholdFilter(logLevelLogCat, logcatAppender, root);
+        setThresholdFilterLevel(logLevel, appender, root);
 
         /* Result */
-        root.info("Setting logcat level to {}. root.getLevel(): {}",
-            logLevelLogCat, root.getLevel().toString());
+        root.info("Setting appender \"{}\" level to {}. root.getLevel(): {}",
+            // Avoid compile error "incompatible types: String cannot be converted to Marker"
+            new Object[]{logAppenderName, logLevel, root.getLevel().toString()});
 
-        if (greaterThan(root.getLevel(), Level.toLevel(logLevelLogCat))) {
+        if (greaterThan(root.getLevel(), Level.toLevel(logLevel))) {
             warnAndToast(context, root,
-                String.format("Root level(%s) > logcat level (%s)!", root.getLevel(), logLevelLogCat)
+                String.format("Root level(%s) > appender \"%s\" level (%s)!",
+                    root.getLevel(), logAppenderName, logLevel)
             );
         }
     }
 
     /**
-     * Actually sets the logCat level. This in realized using a {@link ThresholdFilter}.
+     * Actually sets the threshold filter level. This in realized using a {@link ThresholdFilter}.
      *
-     * @param logLevelLogCat the level to set to the threshold filter
-     * @param logcatAppender logcat appender to change
-     * @param root           root logger, needed as context and for logging changes
+     * @param logLevel the level to set to the threshold filter
+     * @param appender appender to change
+     * @param root     root logger, needed as context and for logging changes
      */
-    private static void setLogCatThresholdFilter(String logLevelLogCat,
-                                                 LogcatAppender logcatAppender, Logger root) {
+    private static void setThresholdFilterLevel(String logLevel,
+                                                Appender<ILoggingEvent> appender, Logger root) {
         /* Find and change filter */
-        List<Filter<ILoggingEvent>> filters = logcatAppender
+        List<Filter<ILoggingEvent>> filters = appender
             .getCopyOfAttachedFiltersList();
         ThresholdFilter threshold = null;
         for (Filter<ILoggingEvent> filter : filters) {
@@ -156,18 +206,18 @@ public final class Logs {
             }
         }
         if (threshold == null) {
-            root.info("No threshold filter in \"LOGCAT\" configured. Creating new one");
+            root.info("No threshold filter in appender \"{}\" configured. Creating new one", appender.getName());
             threshold = new ThresholdFilter();
             threshold.setContext(root.getLoggerContext());
             filters.add(threshold);
         }
-        threshold.setLevel(logLevelLogCat);
+        threshold.setLevel(logLevel);
         threshold.start();
 
         /* Apply changed filter to appender */
-        logcatAppender.clearAllFilters();
+        appender.clearAllFilters();
         for (Filter<ILoggingEvent> filter : filters) {
-            logcatAppender.addFilter(filter);
+            appender.addFilter(filter);
         }
     }
 
@@ -200,7 +250,7 @@ public final class Logs {
      */
     static File findNewestLogFile(File[] logFiles) {
         // Sort descendingly
-        if (logFiles == null) {
+        if (logFiles == null || logFiles.length == 0) {
             return null;
         }
         Arrays.sort(logFiles, Collections.reverseOrder());
