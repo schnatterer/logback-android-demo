@@ -33,6 +33,13 @@
         android:summary="@string/preferences_summary_loglevel"
         android:title="@string/preferences_title_loglevel" />
     <ListPreference
+        android:defaultValue="@string/preferences_default_log_level_file"
+        android:entries="@array/preferences_entry_values_log_levels"
+        android:entryValues="@array/preferences_entry_values_log_levels"
+        android:key="@string/preferences_key_log_level_file"
+        android:summary="@string/preferences_summary_loglevel_file"
+        android:title="@string/preferences_title_loglevel_file" />
+    <ListPreference
         android:defaultValue="@string/preferences_default_log_level_logcat"
         android:entries="@array/preferences_entry_values_log_levels"
         android:entryValues="@array/preferences_entry_values_log_levels"

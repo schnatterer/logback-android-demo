@@ -28,7 +28,9 @@
     <string name="action_settings">Settings</string>
 
     <string name="preferences_title_loglevel">Root Log Level</string>
-    <string name="preferences_summary_loglevel">Determine which log statements are recorded</string>
+    <string name="preferences_summary_loglevel">Determine which log statements are recorded. In real applications it is recommended, to set the appenders as bellow instead of the root level, in order to keep it simple. Otherwise, the root log level must be &lt; than the appender\'s levels</string>
+    <string name="preferences_title_loglevel_file">File Log Level</string>
+    <string name="preferences_summary_loglevel_file">Determine which log statements are forwarded to the log file. Note: Must be >= Root Log Level</string>
     <string name="preferences_title_loglevel_logcat">LogCat Log Level</string>
     <string name="preferences_summary_loglevel_logcat">Determine which log statements are forwarded to LogCat. Note: Must be >= Root Log Level</string>
 

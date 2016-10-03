@@ -64,6 +64,8 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
             .setOnPreferenceChangeListener(new RootLogLevelPreferenceChangedListener());
         findPreference(getString(R.string.preferences_key_log_level_logcat))
             .setOnPreferenceChangeListener(new LogCatLogLevelPreferenceChangedListener(this));
+        findPreference(getString(R.string.preferences_key_log_level_file))
+            .setOnPreferenceChangeListener(new FileLevelPreferenceChangedListener(this));
     }
 
     /**
@@ -119,6 +121,30 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Logs.setLogCatLevel(newValue.toString(), context);
+            //  update the state of the Preference with the new value
+            return true;
+        }
+    }
+
+    /**
+     * Listens for a change in the preference that contains the log level of the root logger.
+     */
+    private static class FileLevelPreferenceChangedListener implements
+        Preference.OnPreferenceChangeListener {
+        /**
+         * Name of the logcat appender, as configured in logback.xml
+         */
+        private static final String FILE_APPENDER_NAME = "file";
+
+        private final Context context;
+
+        public FileLevelPreferenceChangedListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Logs.setThresholdFilterLevel(newValue.toString(), FILE_APPENDER_NAME, context);
             //  update the state of the Preference with the new value
             return true;
         }

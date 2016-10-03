@@ -26,7 +26,12 @@
     </appender>
 
     <!-- Create a file appender that logs all statements -->
+    <!-- Note: the logger's name is referred to in the code as well! -->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- Don't show trace and debug on files -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <file>${LOG_PATH}/${APP_NAME}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
