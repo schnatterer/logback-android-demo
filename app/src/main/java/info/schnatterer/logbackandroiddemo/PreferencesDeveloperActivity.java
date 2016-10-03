@@ -163,6 +163,8 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
                 .setOnPreferenceChangeListener(new RootLogLevelPreferenceChangedListener());
             findPreference(getString(R.string.preferences_key_log_level_logcat))
                 .setOnPreferenceChangeListener(new LogCatLogLevelPreferenceChangedListener(getActivity()));
+            findPreference(getString(R.string.preferences_key_log_level_file))
+                .setOnPreferenceChangeListener(new FileLevelPreferenceChangedListener(getActivity()));
         }
     }
 
