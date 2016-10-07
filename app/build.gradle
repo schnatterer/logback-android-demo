@@ -73,7 +73,6 @@ dependencies {
     testCompile(
         'junit:junit:4.12',
         'org.mockito:mockito-all:1.10.19',
-        "org.robolectric:robolectric:2.4",
-        "org.robolectric:android-all:6.0.0_r1-robolectric-0"
+        "org.robolectric:robolectric:3.1.2"
     )
 }

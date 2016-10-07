@@ -107,7 +107,7 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Listens for a change in the preference that contains the log level of the root logger.
+     * Listens for a change in the preference that contains the log level of log cat appender.
      */
     private static class LogCatLogLevelPreferenceChangedListener implements
         Preference.OnPreferenceChangeListener {
@@ -127,14 +127,10 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
     }
 
     /**
-     * Listens for a change in the preference that contains the log level of the root logger.
+     * * Listens for a change in the preference that contains the log level of file appender.
      */
     private static class FileLevelPreferenceChangedListener implements
         Preference.OnPreferenceChangeListener {
-        /**
-         * Name of the logcat appender, as configured in logback.xml
-         */
-        private static final String FILE_APPENDER_NAME = "file";
 
         private final Context context;
 
@@ -144,7 +140,7 @@ public class PreferencesDeveloperActivity extends AppCompatPreferenceActivity {
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            Logs.setThresholdFilterLevel(newValue.toString(), FILE_APPENDER_NAME, context);
+            Logs.setThresholdFilterLevel(newValue.toString(), Constants.FILE_APPENDER_NAME, context);
             //  update the state of the Preference with the new value
             return true;
         }

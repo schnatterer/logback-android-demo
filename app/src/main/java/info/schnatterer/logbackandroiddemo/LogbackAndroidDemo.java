@@ -24,8 +24,12 @@
 package info.schnatterer.logbackandroiddemo;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
+
+import info.schnatterer.logbackandroidutils.Logs;
 
 /**
  * Application class, takes care of one-time initializations.
@@ -35,7 +39,28 @@ public class LogbackAndroidDemo extends Application {
     public void onCreate() {
         super.onCreate();
 
+        setLogLevelsFromSharedPreferences();
+
         installSlf4jJulHandler();
+    }
+
+    /**
+     * Set the log levels to file and logcat appender from shared preferences.
+     */
+    void setLogLevelsFromSharedPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Set log level for file appender
+        String logLevelFile =
+            sharedPreferences.getString(getString(R.string.preferences_key_log_level_file),
+                getString(R.string.preferences_default_log_level_file));
+        Logs.setThresholdFilterLevel(logLevelFile, Constants.FILE_APPENDER_NAME, this);
+
+        // Set log level for logcat appender
+        String logLevelLogCat =
+            sharedPreferences.getString(getString(R.string.preferences_key_log_level_logcat),
+                getString(R.string.preferences_default_log_level_logcat));
+        Logs.setLogCatLevel(logLevelLogCat, this);
     }
 
     /**
