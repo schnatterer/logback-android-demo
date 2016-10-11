@@ -43,7 +43,7 @@ android {
 }
 
 ext {
-    androidCompatibilityVersion = "24.2.0"
+    androidCompatibilityVersion = "24.2.1"
     slf4jVersion = "1.7.21"
 }
 
