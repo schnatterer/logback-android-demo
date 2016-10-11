@@ -11,6 +11,7 @@ node { // No specific label
 
         stage('Build') {
             gradle 'clean check assembleRelease'
+            archive '**/build/*.apk'
         }
     }
     step([$class: 'Mailer', recipients: 'johannes@schnatterer.info', notifyEveryUnstableBuild: true, sendToIndividuals: true])
