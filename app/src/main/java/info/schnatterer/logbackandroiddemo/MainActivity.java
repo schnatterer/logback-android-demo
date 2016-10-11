@@ -137,10 +137,12 @@ public class MainActivity extends AppCompatActivity {
          * @return the contents of the newest logfile
          */
         private String readLogFile() {
-            String fileContent;
+            String fileContent = "";
             try {
                 File newestLogFile = Logs.findNewestLogFile(context);
-                fileContent = FileUtils.readFileToString(newestLogFile, "UTF-8");
+                if (newestLogFile != null) {
+                    fileContent = FileUtils.readFileToString(newestLogFile, "UTF-8");
+                }
             } catch (IOException e) {
                 LOG.warn("Unable to print log file", e);
                 fileContent = e.getMessage();
