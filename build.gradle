@@ -87,7 +87,3 @@ allprojects {
     // Make sure license check is performed on each build
     check.dependsOn tasks['license']
 }
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
