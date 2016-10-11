@@ -15,6 +15,9 @@
     <appender name="logcat" class="ch.qos.logback.classic.android.LogcatAppender">
         <!-- Don't show trace and debug on logcat -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- Note that this level is overwritten programmatically in the Application class
+                 onCreate(). The default value is defined in preference
+                 "preferences_default_log_level_file" -->
             <level>INFO</level>
         </filter>
         <tagEncoder>
@@ -30,6 +33,9 @@
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- Don't show trace and debug on files -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- Note that this level is overwritten programmatically in the Application class
+                 onCreate(). The default value is defined in preference
+                 "preferences_default_log_level_logcat" -->
             <level>INFO</level>
         </filter>
         <file>${LOG_PATH}/${APP_NAME}.log</file>
@@ -45,6 +51,8 @@
         </encoder>
     </appender>
 
+    <!-- Note that this level is overwritten programmatically in the Application class
+         onCreate(). The default value is defined in preference "preferences_default_log_level" -->
     <root level="ALL">
         <appender-ref ref="logcat" />
         <appender-ref ref="file" />
