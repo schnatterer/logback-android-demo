@@ -50,6 +50,12 @@ public class LogbackAndroidDemo extends Application {
     void setLogLevelsFromSharedPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Set root log level
+        String logLevelRoot =
+            sharedPreferences.getString(getString(R.string.preferences_key_log_level),
+                getString(R.string.preferences_default_log_level));
+        Logs.setRootLogLevel(logLevelRoot);
+
         // Set log level for file appender
         String logLevelFile =
             sharedPreferences.getString(getString(R.string.preferences_key_log_level_file),
