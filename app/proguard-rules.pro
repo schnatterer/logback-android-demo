@@ -23,3 +23,6 @@
 -dontwarn ch.qos.logback.core.net.*
 
 -dontwarn org.slf4j.**
+
+# Get rid of "warning: Ignoring InnerClasses attribute for an anonymous inner class"
+-keepattributes EnclosingMethod
