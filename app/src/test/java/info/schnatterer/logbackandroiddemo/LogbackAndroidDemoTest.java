@@ -32,6 +32,9 @@ import android.support.annotation.NonNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import static org.mockito.Mockito.*;
+
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -67,7 +70,7 @@ public class LogbackAndroidDemoTest {
     @Before
     public void before() throws IOException, JoranException {
         initializeLogbackFromRobolectricAssets();
-        logbackAndroidDemo = (LogbackAndroidDemo) RuntimeEnvironment.application;
+        logbackAndroidDemo = spy((LogbackAndroidDemo) RuntimeEnvironment.application);
     }
 
     /**
@@ -82,8 +85,8 @@ public class LogbackAndroidDemoTest {
         // Call method under test
         logbackAndroidDemo.setLogLevelsFromSharedPreferences();
 
-        Appender<ILoggingEvent> fileAppender = assertAppender("file");
-        assertAppenderThresholdFilterLevel(fileAppender,
+        Appender<ILoggingEvent> appender = assertAppender("file");
+        assertAppenderThresholdFilterLevel(appender,
             Level.toLevel(expectedLevel));
     }
 
@@ -93,17 +96,93 @@ public class LogbackAndroidDemoTest {
      */
     @Test
     public void setLogLevelsFromSharedPreferencesFileAppenderNotSet() throws Exception {
+        String expectedLevel = "WARN";
+        when(logbackAndroidDemo.getString(R.string.preferences_default_log_level_file))
+            .thenReturn(expectedLevel);
+        // Use default
         putSharedPreference(R.string.preferences_key_log_level_file, null);
 
         // Call method under test
         logbackAndroidDemo.setLogLevelsFromSharedPreferences();
 
-        Appender<ILoggingEvent> fileAppender = assertAppender("file");
-        assertAppenderThresholdFilterLevel(fileAppender,
-            Level.toLevel(RuntimeEnvironment.application.getString(R.string.preferences_default_log_level_file)));
+        Appender<ILoggingEvent> appender = assertAppender("file");
+        assertAppenderThresholdFilterLevel(appender,
+            Level.toLevel(expectedLevel));
     }
 
-    // TODO tests for logcat, root logger
+    /**
+     * Test for {@link LogbackAndroidDemo#setLogLevelsFromSharedPreferences()},
+     * where the logcat appender's log level is set.
+     */
+    @Test
+    public void setLogLevelsFromSharedPreferencesLogCatAppender() throws Exception {
+        String expectedLevel = "ERROR";
+        putSharedPreference(R.string.preferences_key_log_level_logcat, expectedLevel);
+
+        // Call method under test
+        logbackAndroidDemo.setLogLevelsFromSharedPreferences();
+
+        Appender<ILoggingEvent> appender = assertAppender("logcat");
+        assertAppenderThresholdFilterLevel(appender,
+            Level.toLevel(expectedLevel));
+    }
+
+    /**
+     * Test for {@link LogbackAndroidDemo#setLogLevelsFromSharedPreferences()},
+     * where the logcat appender's log level is not set.
+     */
+    @Test
+    public void setLogLevelsFromSharedPreferencesLogcatAppenderNotSet() throws Exception {
+        String expectedLevel = "WARN";
+        when(logbackAndroidDemo.getString(R.string.preferences_default_log_level_logcat))
+            .thenReturn(expectedLevel);
+        // Use default
+        putSharedPreference(R.string.preferences_key_log_level_logcat, null);
+
+        // Call method under test
+        logbackAndroidDemo.setLogLevelsFromSharedPreferences();
+
+        Appender<ILoggingEvent> appender = assertAppender("logcat");
+        assertAppenderThresholdFilterLevel(appender,
+            Level.toLevel(expectedLevel));
+    }
+
+    /**
+     * Test for {@link LogbackAndroidDemo#setLogLevelsFromSharedPreferences()},
+     * where the root logger's log level is set.
+     */
+    @Test
+    public void setLogLevelsFromSharedPreferencesRootLogger() throws Exception {
+        String expectedLevel = "ERROR";
+        putSharedPreference(R.string.preferences_key_log_level, expectedLevel);
+
+        // Call method under test
+        logbackAndroidDemo.setLogLevelsFromSharedPreferences();
+
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        assertEquals("Unexpected level set in logcat appender", Level.toLevel(expectedLevel),
+            root.getLevel());
+    }
+
+    /**
+     * Test for {@link LogbackAndroidDemo#setLogLevelsFromSharedPreferences()},
+     * where the root logger's log level is not set.
+     */
+    @Test
+    public void setLogLevelsFromSharedPreferencesRootNotSet() throws Exception {
+        String expectedLevel = "WARN";
+        when(logbackAndroidDemo.getString(R.string.preferences_default_log_level))
+            .thenReturn(expectedLevel);
+        // Use default
+        putSharedPreference(R.string.preferences_key_log_level, null);
+
+        // Call method under test
+        logbackAndroidDemo.setLogLevelsFromSharedPreferences();
+
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        assertEquals("Unexpected level set in logcat appender", Level.toLevel(expectedLevel),
+            root.getLevel());
+    }
 
     /**
      * Makes sure logback is initialized from the same logback.xml as productive app.
