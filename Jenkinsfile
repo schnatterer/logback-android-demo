@@ -26,7 +26,7 @@ node { // No specific label
     // Archive JUnit results, if any
     junit allowEmptyResults: true, testResults: '**/build/test-results/**/*.xml'
     // Send mail on failure
-    step([$class: 'Mailer', recipients: 'johannes@schnatterer.info', notifyEveryUnstableBuild: true, sendToIndividuals: true])
+    step([$class: 'Mailer', recipients: '$RECIPIENTS', notifyEveryUnstableBuild: true, sendToIndividuals: true])
 }
 
 def javaHome

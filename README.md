@@ -18,6 +18,7 @@ An example that shows some possibilities of using [logback-android](http://tony1
 
 
 ## Jenkins
-Running [Jenkinsfile](Jenkinsfile) with the [pipeline plugin](https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Plugin) requires
-- A JDK defined as tool in Jenkins (see [Jenkinsfile](Jenkinsfile) for current name)
+Running [Jenkinsfile](Jenkinsfile) with the [pipeline plugin](https://wiki.jenkins-ci.org/display/JENKINS/Pipeline+Plugin) (tested with version 2.4) requires
+- A JDK defined as Jenkins tool  (see [Jenkinsfile](Jenkinsfile) for name of JDK tool)
 - Android SDK installed on Jenkins salve, matching the `compileSdkVersion` and `buildToolsVersion` as defined in [app/build.gradle](app/build.gradle)
+- Optional: You can add a build parameter `RECIPIENTS` that contains a comma-separated list of all email recipie
