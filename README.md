@@ -2,6 +2,7 @@ logback-android-demo
 ====================
 
  [![Build Status](https://jenkins.schnatterer.info/job/logback-android-demo/badge/icon)](https://jenkins.schnatterer.info/job/logback-android-demo/)
+ [![License](https://img.shields.io/github/license/schnatterer/logback-android-demo.svg)](LICENSE)
  [<img alt="powered by openshift" align="right" src="https://www.openshift.com/images/logos/powered_by_openshift.png"/>](https://www.openshift.com/)
 
 An example that shows some possibilities of using [logback-android](http://tony19.github.io/logback-android/):
