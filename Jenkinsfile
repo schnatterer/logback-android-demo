@@ -2,7 +2,7 @@
 
 node { // No specific label
 
-    javaHome = tool 'JDK8-u101'
+    javaHome = tool 'JDK8'
 
     catchError {
         stage('Checkout') {
