@@ -35,5 +35,5 @@
     <string name="preferences_summary_loglevel_logcat">Determine which log statements are forwarded to LogCat. Note: Must be >= Root Log Level</string>
 
     <string name="preferences_title_current_log">Open current log file</string>
-    <string name="preferences_title_email_log">Send log files per email</string>
+    <string name="preferences_title_email_log">Send log files via email</string>
 </resources>
